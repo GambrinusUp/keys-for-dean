@@ -36,3 +36,29 @@
     transform: rotate(360deg);
   }
 }
+
+.btn {
+  font-size: 16px;
+  margin-top: 10px;
+  width: 354px;
+  height: 47px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #0052D4 0%, #4364F7 50%, #6FB1FC 100%);
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  color: #FFFFFF;
+}
+
+.non-active-btn {
+  font-size: 16px;
+  margin-top: 10px;
+  width: 354px;
+  height: 47px;
+  border-radius: 10px;
+  background: #FFFFFF;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  color: #000000;
+}
