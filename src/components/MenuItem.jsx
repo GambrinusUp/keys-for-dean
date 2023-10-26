@@ -2,11 +2,10 @@ import {useState} from "react";
 import {Link} from "react-router-dom";
 
 function MenuItem () {
-    const [activeLink, setActiveLink] = useState('/'); // Состояние для отслеживания активной ссылки
+    const [activeLink, setActiveLink] = useState('/');
 
-    // Обработчик клика на ссылке
     const handleLinkClick = (path) => {
-        setActiveLink(path); // Устанавливаем активную ссылку при клике
+        setActiveLink(path);
     };
 
     return (

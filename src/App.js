@@ -1,16 +1,12 @@
-import {BrowserRouter as Router, Routes, Route, Link, useLocation, useMatch} from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import './App.css';
-import {Button, Layout, Menu} from "antd";
+import {Layout} from "antd";
 import Sider from "antd/es/layout/Sider";
 import {Content, Header} from "antd/es/layout/layout";
-import {UploadOutlined, UserOutlined, VideoCameraOutlined} from "@ant-design/icons";
 import MainPage from "./pages/main_page/MainPage";
-import {useEffect, useState} from "react";
 import MenuItem from "./components/MenuItem";
 
 function App() {
-
-
   return (
       <Router>
           <Layout>
