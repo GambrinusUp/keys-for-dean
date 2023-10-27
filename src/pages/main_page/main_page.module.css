@@ -3,9 +3,12 @@
     /*text-align: center;*/
     background-color: #EEEEEE;
     padding: 20px;
+    display: flex;
+    flex-direction: row;
 }
 
 .panel {
+    width: 100%;
     max-width: 1000px;
     height: 880px;
     display: flex;

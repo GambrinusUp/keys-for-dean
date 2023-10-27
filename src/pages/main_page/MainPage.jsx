@@ -1,9 +1,9 @@
 import styles from './main_page.module.css'
 import KeyElement from "../../components/KeyElement";
 import {testKeys} from "../../constants/constants";
+import CalendarItem from "../../components/CalendarItem";
 
 function MainPage() {
-
     return (
         <>
             <div className={styles.mainContainer}>
@@ -14,6 +14,7 @@ function MainPage() {
                                         name={keyItem.name} status={keyItem.status}/>)}
                     </div>
                 </div>
+                <CalendarItem />
             </div>
         </>
     )
