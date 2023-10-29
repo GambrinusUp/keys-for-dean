@@ -10,7 +10,10 @@ function App() {
   return (
       <Router>
           <Layout>
-              <Header style={{background: "linear-gradient(90deg, #0052D4 0%, #4364F7 50%, #6FB1FC 100%)"}}>Header</Header>
+              <Header style={{background: "linear-gradient(90deg, #0052D4 0%, #4364F7 50%, #6FB1FC 100%)"}}>
+                  <span style={{color: 'white', borderBottom: '5px solid',
+                      lineHeight: '90px', fontSize: 24, marginLeft: 350}}>Список ключей</span>
+              </Header>
               <Layout hasSider>
                   <Sider
                       style={{background: "#D9D9D9"}} width={400}>

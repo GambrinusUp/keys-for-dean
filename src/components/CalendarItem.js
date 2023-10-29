@@ -7,7 +7,7 @@ import {useEffect, useState} from "react";
 import {Checkbox} from "antd";
 import moment from "moment/moment";
 
-function CalendarItem() {
+function CalendarItem({ onCheckboxChange }) {
     const [isChecked, setIsChecked] = useState(false);
     const [currentTime, setCurrentTime] = useState(moment());
     const [currentWeekDates, setCurrentWeekDates] = useState([]);
@@ -44,7 +44,14 @@ function CalendarItem() {
         console.log(moment(currentWeekDates[0]).format('DD.MM'));
     }
 
+    const handleCheckboxChange = () => {
+        const newState = !isChecked;
+        setIsChecked(newState);
+        onCheckboxChange(newState);
+    };
+
     useEffect(() => {
+        // eslint-disable-next-line
         const currentDate = moment();
         const startOfWeek = currentDate.startOf('isoWeek').format('YYYY-MM-DD');
         const endOfWeek = currentDate.endOf('isoWeek').format('YYYY-MM-DD');
@@ -63,13 +70,10 @@ function CalendarItem() {
         if (sDay === 7)
             sDay = 1;
         setSelectedDay(sDay);
-
-        const interval = setInterval(() => {
-            setCurrentTime(moment());
-            console.log(moment().format('HH:mm'));
-        }, 60000);
-        return () => clearInterval(interval);
-    }, [currentTime]);
+        setCurrentTime(moment());
+        console.log(moment().format('HH:mm'));
+        // eslint-disable-next-line
+    }, []);
 
     return (
         <div className={styles.calendarWrapper}>
@@ -99,7 +103,8 @@ function CalendarItem() {
             </div>
             <Checkbox
                 checked={isChecked}
-                onChange={(e) => setIsChecked(e.target.checked)}
+                //onChange={(e) => setIsChecked(e.target.checked)}
+                onChange={handleCheckboxChange}
                 style={{paddingTop: 10, fontSize: 17}}>
                 Показывать только свободные аудитории
             </Checkbox>
