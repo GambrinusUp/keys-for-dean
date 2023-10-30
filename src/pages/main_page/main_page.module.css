@@ -1,0 +1,38 @@
+.mainContainer {
+    min-height: calc(100dvh - 64px);
+    /*text-align: center;*/
+    background-color: #EEEEEE;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+.panel {
+    width: 100%;
+    max-width: 1000px;
+    height: 880px;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    min-height: 50px;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    border-radius: 15px;
+    background: #FFF;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+.keysWrapper {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/*.searchInput {
+    border-radius: 30px;
+    height: 50px;
+    max-width: 660px;
+    margin-top: 20px;
+}*/
