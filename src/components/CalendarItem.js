@@ -1,31 +1,22 @@
 import styles from './components.module.css'
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
-import {findRange, testDays, times} from "../constants/constants";
+import {testDays, times} from "../constants/constants";
 import DayItem from "./DayItem";
 import TimeItem from "./TimeItem";
 import {useEffect, useState} from "react";
 import {Checkbox} from "antd";
 import moment from "moment/moment";
+import {findCurrentRangeIndex} from "../helpers/helper";
+import {useDispatch} from "react-redux";
+import {getKeysThunkCreator} from "../store/keysReducer";
 
 function CalendarItem({ onCheckboxChange }) {
+    const dispatch = useDispatch();
     const [isChecked, setIsChecked] = useState(false);
     const [currentTime, setCurrentTime] = useState(moment());
     const [currentWeekDates, setCurrentWeekDates] = useState([]);
-    const [selectedDay, setSelectedDay] = useState(1);
-    const [selectedTime, setSelectedTime] = useState(1);
-
-    function findCurrentRangeIndex(currentTime) {
-        const currentMoment = moment(currentTime, 'HH:mm');
-        for (let i = 0; i < findRange.length; i++) {
-            const [start, end] = findRange[i].split('-').map(range => moment(range, 'HH:mm'));
-            if (
-                (currentMoment.isSameOrAfter(start) && currentMoment.isSameOrBefore(end))
-            ) {
-                return i === 0 ? i + 1 : i;
-            }
-        }
-        return 1;
-    }
+    const [selectedDay, setSelectedDay] = useState(moment(currentTime).format('YYYY-MM-DD'));
+    const [selectedTime, setSelectedTime] = useState(findCurrentRangeIndex(currentTime));
 
     function updateWeekDates(weeksToAdd) {
         setCurrentWeekDates((prevWeekDates) => {
@@ -38,10 +29,8 @@ function CalendarItem({ onCheckboxChange }) {
                 newWeekDates.push(currentDay.format('YYYY-MM-DD'));
                 currentDay.add(1, 'day');
             }
-            //dispatch(getScheduleThunkCreator(id, newWeekDates[0]));
             return newWeekDates;
         });
-        console.log(moment(currentWeekDates[0]).format('DD.MM'));
     }
 
     const handleCheckboxChange = () => {
@@ -63,17 +52,13 @@ function CalendarItem({ onCheckboxChange }) {
         }
         setCurrentWeekDates(weekDates);
         setSelectedTime(findCurrentRangeIndex(currentTime));
-
-        console.log(weekDates);
-
-        let sDay = weekDates.findIndex(date => date === moment().format('YYYY-MM-DD')) + 1;
-        if (sDay === 7)
-            sDay = 1;
-        setSelectedDay(sDay);
         setCurrentTime(moment());
-        console.log(moment().format('HH:mm'));
         // eslint-disable-next-line
     }, []);
+
+    useEffect(() => {
+        dispatch(getKeysThunkCreator(selectedDay, selectedTime)).catch(() => console.log('error'));
+    }, [dispatch, currentTime, selectedTime, selectedDay]); //+selectedDay
 
     return (
         <div className={styles.calendarWrapper}>
@@ -83,23 +68,32 @@ function CalendarItem({ onCheckboxChange }) {
             <div className={styles.daySelect}>
                 <LeftOutlined onClick={() => updateWeekDates(-1)}/>
                 {testDays.map(item =>
-                    <DayItem key={item.id} id={item.id}
-                             date={moment(currentWeekDates[item.id - 1]).format('DD.MM')} day={item.day}
-                             background={selectedDay === item.id ?
-                                 'linear-gradient(90deg, #72C6EF 0%, #004E8F 100%)'
+                    <DayItem key={item.id}
+                             id={item.id}
+                             date={moment(currentWeekDates[item.id - 1]).format('DD.MM')}
+                             day={item.day}
+                             background={selectedDay === moment(currentWeekDates[item.id - 1]).format('YYYY-MM-DD') ?
+                                 'linear-gradient(90deg, #0052D4 0%, #4364F7 50%, #6FB1FC 100%)'
                              : '#D9D9D9'}
-                             onClick={() => {setSelectedDay(item.id); console.log('Click1')}}
+                             onClick={() => {
+                                 setSelectedDay(moment(currentWeekDates[item.id - 1]).format('YYYY-MM-DD'));
+                             }}
                     />)}
                 <RightOutlined onClick={() => updateWeekDates(1)}/>
             </div>
             <div className={styles.timeSelect}>
                 {times.map(timeItem =>
-                    <TimeItem key={timeItem.id} id={timeItem.id}
-                              range={timeItem.range} time={currentTime}
+                    <TimeItem key={timeItem.id}
+                              id={timeItem.id}
+                              range={timeItem.range}
+                              time={currentTime}
                               background={selectedTime === timeItem.id ?
-                                  'linear-gradient(90deg, #72C6EF 0%, #004E8F 100%)'
+                                  'linear-gradient(90deg, #0052D4 0%, #4364F7 50%, #6FB1FC 100%)'
                                   : '#D9D9D9'}
-                              onClick={() => {setSelectedTime(timeItem.id); console.log('Click2')}}/>)}
+                              onClick={() => {
+                                  setSelectedTime(timeItem.id); console.log('Click2')
+                              }}
+                    />)}
             </div>
             <Checkbox
                 checked={isChecked}

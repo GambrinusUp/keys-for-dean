@@ -2,26 +2,28 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import './App.css';
 import {Layout} from "antd";
 import Sider from "antd/es/layout/Sider";
-import {Content, Header} from "antd/es/layout/layout";
+import {Content} from "antd/es/layout/layout";
 import MainPage from "./pages/main_page/MainPage";
 import MenuItem from "./components/MenuItem";
+import RequestsPage from "./pages/requests_page/RequestsPage";
+import HeaderItem from "./components/HeaderItem";
 
 function App() {
   return (
       <Router>
           <Layout>
-              <Header style={{background: "linear-gradient(90deg, #0052D4 0%, #4364F7 50%, #6FB1FC 100%)"}}>
-                  <span style={{color: 'white', borderBottom: '5px solid',
-                      lineHeight: '90px', fontSize: 24, marginLeft: 350}}>Список ключей</span>
-              </Header>
+              <HeaderItem />
               <Layout hasSider>
                   <Sider
+                      breakpoint="lg"
+                      collapsedWidth="200"
                       style={{background: "#D9D9D9"}} width={400}>
                       <MenuItem />
                   </Sider>
                   <Content>
                       <Routes>
                           <Route path='/' element={<MainPage />} />
+                          <Route path='/requests' element={<RequestsPage />} />
                       </Routes>
                   </Content>
               </Layout>

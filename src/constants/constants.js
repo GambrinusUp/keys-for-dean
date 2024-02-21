@@ -130,3 +130,13 @@ export const findRange = [
     "18:11-20:00",
     "20:01-21:50",
 ]
+
+export const colorStatus = [
+    "default",
+    "success"
+]
+
+export const textStatus = [
+    "В ожидании",
+    "Одобрена"
+]

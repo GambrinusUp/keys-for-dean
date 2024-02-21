@@ -1,12 +1,17 @@
-import {useState} from "react";
-import {Link} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {Link, useLocation} from "react-router-dom";
 
 function MenuItem () {
+    const location = useLocation();
     const [activeLink, setActiveLink] = useState('/');
 
     const handleLinkClick = (path) => {
         setActiveLink(path);
     };
+
+    useEffect(() => {
+        setActiveLink(location.pathname);
+    }, [location]);
 
     return (
         <div style={{width: "100%", display:"flex", flexDirection:"column",

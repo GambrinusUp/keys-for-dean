@@ -1,7 +1,7 @@
 .key {
     width: 100%;
     max-width: 750px;
-    height: 70px;
+    min-height: 70px;
     border-radius: 30px;
     border: 1px solid #DADADA;
     background: #FFF;
@@ -25,7 +25,7 @@
     color: #FFF;
     text-align: center;
     font-size: 20px;
-    width: 200px;
+    min-width: 150px;
     height: 40px;
     border-radius: 10px;
     /*background: linear-gradient(90deg, #7474BF 0%, #348AC7 100%);*/
@@ -98,4 +98,29 @@
 
 .timeItem:not(:first-child) {
     margin-top: 10px;
+}
+
+.listItem {
+    display: flex;
+    max-width: 900px;
+    min-height: 60px;
+    border-bottom: 2px solid #000;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.listItemData {
+    display: flex;
+    flex-direction: column;
+    padding-left: 20px;
+    width: 100%;
+}
+
+.circleStyle {
+    margin-left: 30px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: green;
 }

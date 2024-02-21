@@ -1,17 +1,28 @@
 import styles from './main_page.module.css'
 import KeyElement from "../../components/KeyElement";
-import {testKeys} from "../../constants/constants";
 import CalendarItem from "../../components/CalendarItem";
-import {Input, Pagination} from "antd";
-import {SearchOutlined} from "@ant-design/icons";
-import {useEffect, useState} from "react";
+import {Input, Pagination, Spin} from "antd";
+import {LoadingOutlined, SearchOutlined} from "@ant-design/icons";
+import {useState} from "react";
+import {useSelector} from "react-redux";
 
 function MainPage() {
+    const items = useSelector((state) => state.keysReducer.keys);
+    const isLoading = useSelector((state) => state.keysReducer.isLoading);
     const [currentPage, setCurrentPage] = useState(1);
-    const [searchKey, setSearchKey] = useState('');
     const itemsPerPage = 8;
-    const [totalFilteredKeys, setTotalFilteredKeys] = useState(testKeys);
     const [isChecked, setIsChecked] = useState(false);
+    const [searchText, setSearchText] = useState('');
+
+    const filteredItems = items.filter(item => {
+        if (isChecked && item.keyStatus !== 0) {
+            return false;
+        }
+        if (searchText && !item.audienceName.toLowerCase().includes(searchText.toLowerCase())) {
+            return false;
+        }
+        return true;
+    });
 
     const handleChildCheckboxChange = (newState) => {
         console.log(isChecked);
@@ -19,26 +30,13 @@ function MainPage() {
         setIsChecked(newState);
     };
 
-
-    useEffect(() => {
-        console.log('check')
-        /*const filteredKeys = testKeys.filter((keyItem) =>
-            keyItem.name.toLowerCase().includes(searchKey.toLowerCase())
-        );*/
-        const filteredKeys = testKeys.filter((keyItem) => {
-            return keyItem.name.toLowerCase().includes(searchKey.toLowerCase()) &&
-                (!isChecked || keyItem.status !== 'Отсутствует');
-        });
-        setTotalFilteredKeys(filteredKeys);
-    }, [searchKey, isChecked]);
-
     const updateCurrentPage = () => {
         setCurrentPage(1);
     };
 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const displayedKeys = totalFilteredKeys.slice(startIndex, endIndex);
+    const displayedKeys = filteredItems.slice(startIndex, endIndex);
 
     return (
         <>
@@ -50,21 +48,47 @@ function MainPage() {
                                boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
                                border: '1px solid #000'}}
                            prefix={<SearchOutlined />}
-                           value={searchKey}
-                           onChange={(event) => setSearchKey(event.target.value)}
-                           onPressEnter={updateCurrentPage}/>
+                           value={searchText}
+                           onChange={(event) => {
+                               setSearchText(event.target.value);
+                           }}
+                           onPressEnter={updateCurrentPage}
+                    />
                     <div className={styles.keysWrapper}>
-                        {displayedKeys.map(keyItem =>
-                            <KeyElement key={keyItem.id} id={keyItem.id}
-                                        name={keyItem.name} status={keyItem.status}/>)}
+                        {isLoading ? (
+                            <Spin
+                                tip="Loading"
+                                size="large"
+                                indicator={
+                                    <LoadingOutlined
+                                        style={{
+                                            fontSize: 40,
+                                        }}
+                                        spin
+                                    />
+                                }
+                            />
+                        ) : (displayedKeys.length > 0 ? (
+                                displayedKeys.map(item => (
+                                    <KeyElement key={item.keyId}
+                                                id={item.keyId}
+                                                name={item.audeinceName}
+                                                status={item.keyStatus}
+                                    />
+                                ))
+                            ) : (
+                                "Аудиторий не найдено"
+                            ))}
                     </div>
                     <Pagination
                         style={{marginTop: 40}}
                         defaultCurrent={1}
-                        total={totalFilteredKeys.length}
+                        total={filteredItems.length}
                         pageSize={8}
                         current={currentPage}
-                        onChange={setCurrentPage}/>
+                        onChange={setCurrentPage}
+                        showSizeChanger={false}
+                    />
                 </div>
                 <CalendarItem onCheckboxChange={handleChildCheckboxChange} />
             </div>
